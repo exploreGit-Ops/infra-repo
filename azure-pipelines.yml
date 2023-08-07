@@ -62,41 +62,34 @@ stages:
                   environmentServiceNameAzureRM: 'warroyo-se'
                   workingDirectory: '$(System.DefaultWorkingDirectory)/terraform/'
 
-  # - stage: apply
-  #   dependsOn: [plan]
-  #   condition: succeeded('plan')
-  #   jobs:
-  #     - job: terraform_apply_develop
-  #       steps:
-  #             - checkout: self
-  #             - task: TerraformInstaller@0
-  #               displayName: 'install'
-  #               inputs:
-  #                 terraformVersion: '0.13.3'
-  #             - task: TerraformTaskV1@0
-  #               displayName: 'init'
-  #               inputs:
-  #                 provider: 'azurerm'
-  #                 command: 'init'
-  #                 backendServiceArm: 'tamopstf'
-  #                 backendAzureRmResourceGroupName: 'tamopstfstates'
-  #                 backendAzureRmStorageAccountName: 'tfstatedevops'
-  #                 backendAzureRmContainerName: 'azurefestivecalendar'
-  #                 backendAzureRmKey: 'terraformdev.tfstate' 
-  #                 workingDirectory: '$(System.DefaultWorkingDirectory)/terraform/'
-  #             - task: TerraformTaskV1@0
-  #               displayName: 'plan'
-  #               inputs:
-  #                 provider: 'azurerm'
-  #                 command: 'plan'
-  #                 commandOptions: '-input=false -var-file="../vars/$(Environment)/$(Environment).tfvars"'
-  #                 environmentServiceNameAzureRM: 'tamopstf'
-  #                 workingDirectory: '$(System.DefaultWorkingDirectory)/terraform/'
-  #             - task: TerraformTaskV1@0
-  #               displayName: 'apply'
-  #               inputs:
-  #                 provider: 'azurerm'
-  #                 command: 'apply'
-  #                 commandOptions: '-input=false -auto-approve -var-file="../vars/$(Environment)/$(Environment).tfvars"'
-  #                 environmentServiceNameAzureRM: 'tamopstf'
-  #                 workingDirectory: '$(System.DefaultWorkingDirectory)/terraform/'
+  - stage: apply
+    dependsOn: [plan]
+    condition: succeeded('plan')
+    jobs:
+      - job: terraform_apply
+        steps:
+              - checkout: self
+              - task: TerraformInstaller@0
+                displayName: 'install'
+                inputs:
+                  terraformVersion: '1.5.4'
+              - task: TerraformTaskV2@0
+                displayName: 'init'
+                inputs:
+                  inputs:
+                  provider: 'azurerm'
+                  command: 'init'
+                  backendServiceArm: 'warroyo-se'
+                  backendAzureRmResourceGroupName: 'tfstate-explore'
+                  backendAzureRmStorageAccountName: 'tfstate01explore'
+                  backendAzureRmContainerName: 'tfstate'
+                  backendAzureRmKey: 'terraform.tfstate'
+                  workingDirectory: '$(System.DefaultWorkingDirectory)/terraform/'
+              - task: TerraformTaskV2@0
+                displayName: 'apply'
+                inputs:
+                  provider: 'azurerm'
+                  command: 'apply'
+                  # commandOptions: '-input=false -var-file="../vars/$(Environment)/$(Environment).tfvars"'
+                  environmentServiceNameAzureRM: 'warroyo-se'
+                  workingDirectory: '$(System.DefaultWorkingDirectory)/terraform/'

@@ -36,3 +36,33 @@ az storage container create --name $CONTAINER_NAME --account-name $STORAGE_ACCOU
 
 ```
 
+## Create the Azure Keyvault for Terraform secrets
+
+We need a place to store secrets and retrieve them when using TF. for example the TMC API key.
+
+1. create a resource group 
+
+```bash 
+az group create --name keyvaults --location eastus
+```
+
+2. create a keyvault
+
+```bash
+az keyvault create --name "explore-gitops" --resource-group "keyvaults" --location "EastUS"
+
+```
+
+3. get the SP that was created for your service connection in the pre-reqs. this can be found by looking at the service connection in ADO and clicking the link to "manage service prinipal" use that name to get the object ID
+
+```bash
+az ad sp list --display-name "service-connection-sp-name"
+```
+
+4. assign permissions to the sp on the keyvault
+
+
+```bash
+az role assignment create --role "Key Vault Secrets User" --assignee {object id from output above} --scope /subscriptions/{subscriptionid}/resourcegroups/keyvaults/providers/Microsoft.KeyVault/vaults/explore-gitops
+
+```
