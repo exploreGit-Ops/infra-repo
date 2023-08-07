@@ -1,12 +1,12 @@
 # Create Tanzu Mission Control git repository with attached set as default value.
 resource "tanzu-mission-control_git_repository" "create_cluster_group_git_repository" {
-  name = "tmc-cd-new" # Required
+  name = "infra-gitops" # Required
 
   namespace_name = "tanzu-continuousdelivery-resources" #Required
 
   scope {
     cluster_group {
-      name = "tmc-multitenant-cluster-group" #Required
+      name = "dev" #Required
     }
   }
 
@@ -16,17 +16,17 @@ resource "tanzu-mission-control_git_repository" "create_cluster_group_git_reposi
   }
 
   spec {
-    url = "https://github.com/skandpurohit/tmc-cd" # Required
+    url = "https://github.com/exploreGit-Ops/infra-repo" # Required
     #secret_ref = "testSourceSecret"
     interval = "5m" # Default: 5m
     git_implementation = "GO_GIT" # Default: GO_GIT
     ref {
-      branch = "master" 
+      branch = "main" 
     #   tag = "testTag"
     #   semver = "testSemver"
     #   commit = "testCommit"
     } 
   }
 
-  depends_on = [tanzu-mission-control_ekscluster.tf_eks_cluster]
+  depends_on = [tanzu-mission-control_cluster_group.create_cluster_group]
 }

@@ -35,3 +35,4 @@ az storage account create --resource-group $RESOURCE_GROUP_NAME --name $STORAGE_
 az storage container create --name $CONTAINER_NAME --account-name $STORAGE_ACCOUNT_NAME
 
 ```
+
