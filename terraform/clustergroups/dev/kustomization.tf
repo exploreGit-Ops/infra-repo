@@ -1,6 +1,6 @@
 # Create Tanzu Mission Control kustomization with attached set as default value.
 resource "tanzu-mission-control_kustomization" "create_cluster_group_kustomization" {
-  name = "tf-kustomization" # Required
+  name = "infra-base" # Required
 
   namespace_name = "tanzu-continuousdelivery-resources" #Required
 
@@ -20,7 +20,7 @@ resource "tanzu-mission-control_kustomization" "create_cluster_group_kustomizati
     prune = true
     interval = "5m" # Default: 5m
     source {
-        name = "infra-base" # Required
+       name = "infra-gitops" # Required
        namespace = "tanzu-continuousdelivery-resources" # Required
     }
   }
