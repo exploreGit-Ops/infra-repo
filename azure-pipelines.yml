@@ -18,6 +18,7 @@ stages:
         inputs:
           provider: 'azurerm'
           command: 'init'
+          backendServiceArm: 'warroyo-se'
           backendAzureRmResourceGroupName: 'tfstate-explore'
           backendAzureRmStorageAccountName: 'tfstate01explore'
           backendAzureRmContainerName: 'tfstate'

@@ -2,7 +2,9 @@
 
 This repo is a part of the [VMWare Explore talk]() on creating developer ready K8s clusters using TMC and GitOps. This repo holds all of the terraform, and infra level flux configurations.
 
+## Pre-reqs
 
+* install the [Terraform Task](https://marketplace.visualstudio.com/items?itemName=ms-devlabs.custom-terraform-tasks) in your ADO organization
 
 ## Create the Azure backend for Terraform
 
