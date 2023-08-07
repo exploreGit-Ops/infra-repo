@@ -3,31 +3,98 @@ trigger:
     include:
       - main
 
-variables:
-  buildConfiguration: 'Release'
-  releaseBranchName: 'release'
-
 stages:
-- stage: 'plan'
-  displayName: 'terraform plan'
-  jobs: 
-  - job: 'plan'
-    displayName: 'plan'
-    pool:
-      vmImage: 'ubuntu-latest'
+  - stage: validate
+    jobs:
+    - job: validate
+      continueOnError: false
+      steps:
+      - task: TerraformInstaller@0
+        displayName: "Install Terraform"
+        inputs:
+          terraformVersion: '1.5.4'
+      - task: TerraformTaskV2@0
+        displayName: 'init'
+        inputs:
+          provider: 'azurerm'
+          command: 'init'
+          backendAzureRmResourceGroupName: 'tfstate-explore'
+          backendAzureRmStorageAccountName: 'tfstate01explore'
+          backendAzureRmContainerName: 'tfstate'
+          backendAzureRmKey: 'terraform.tfstate'
+          workingDirectory: '$(System.DefaultWorkingDirectory)/terraform/'
+      - task: TerraformTaskV2@0
+        displayName: 'validate'
+        inputs:
+          provider: 'azurerm'
+          command: 'validate'
+          
+  # - stage: plan
+  #   dependsOn: [validate]
+  #   condition: succeeded('validate')
+  #   jobs:
+  #     - job: terraform_plan_develop
+  #       steps:
+  #             - checkout: self
+  #             - task: TerraformInstaller@0
+  #               displayName: 'install'
+  #               inputs:
+  #                 terraformVersion: '0.13.3'
+  #             - task: TerraformTaskV1@0
+  #               displayName: 'init'
+  #               inputs:
+  #                 provider: 'azurerm'
+  #                 command: 'init'
+  #                 backendServiceArm: 'tamopstf'
+  #                 backendAzureRmResourceGroupName: 'tamopstfstates'
+  #                 backendAzureRmStorageAccountName: 'tfstatedevops'
+  #                 backendAzureRmContainerName: 'azurefestivecalendar'
+  #                 backendAzureRmKey: 'terraformdev.tfstate'
+  #                 workingDirectory: '$(System.DefaultWorkingDirectory)/terraform/'
+  #             - task: TerraformTaskV1@0
+  #               displayName: 'plan'
+  #               inputs:
+  #                 provider: 'azurerm'
+  #                 command: 'plan'
+  #                 commandOptions: '-input=false -var-file="../vars/$(Environment)/$(Environment).tfvars"'
+  #                 environmentServiceNameAzureRM: 'tamopstf'
+  #                 workingDirectory: '$(System.DefaultWorkingDirectory)/terraform/'
 
-    steps:
-      - script: echo Hello, world!
-        displayName: 'Run a one-line script'
-
-- stage: 'apply'
-  displayName: 'terraform apply'
-  jobs: 
-  - job: 'plapplyan'
-    displayName: 'apply'
-    pool:
-      vmImage: 'ubuntu-latest'
-
-    steps:
-      - script: echo Hello, world!
-        displayName: 'Run a one-line script'
+  # - stage: apply
+  #   dependsOn: [plan]
+  #   condition: succeeded('plan')
+  #   jobs:
+  #     - job: terraform_apply_develop
+  #       steps:
+  #             - checkout: self
+  #             - task: TerraformInstaller@0
+  #               displayName: 'install'
+  #               inputs:
+  #                 terraformVersion: '0.13.3'
+  #             - task: TerraformTaskV1@0
+  #               displayName: 'init'
+  #               inputs:
+  #                 provider: 'azurerm'
+  #                 command: 'init'
+  #                 backendServiceArm: 'tamopstf'
+  #                 backendAzureRmResourceGroupName: 'tamopstfstates'
+  #                 backendAzureRmStorageAccountName: 'tfstatedevops'
+  #                 backendAzureRmContainerName: 'azurefestivecalendar'
+  #                 backendAzureRmKey: 'terraformdev.tfstate' 
+  #                 workingDirectory: '$(System.DefaultWorkingDirectory)/terraform/'
+  #             - task: TerraformTaskV1@0
+  #               displayName: 'plan'
+  #               inputs:
+  #                 provider: 'azurerm'
+  #                 command: 'plan'
+  #                 commandOptions: '-input=false -var-file="../vars/$(Environment)/$(Environment).tfvars"'
+  #                 environmentServiceNameAzureRM: 'tamopstf'
+  #                 workingDirectory: '$(System.DefaultWorkingDirectory)/terraform/'
+  #             - task: TerraformTaskV1@0
+  #               displayName: 'apply'
+  #               inputs:
+  #                 provider: 'azurerm'
+  #                 command: 'apply'
+  #                 commandOptions: '-input=false -auto-approve -var-file="../vars/$(Environment)/$(Environment).tfvars"'
+  #                 environmentServiceNameAzureRM: 'tamopstf'
+  #                 workingDirectory: '$(System.DefaultWorkingDirectory)/terraform/'

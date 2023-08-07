@@ -1,8 +1,8 @@
 terraform {
   required_providers {
-    aws = {
-      source = "hashicorp/aws"
-      version = "5.8.0"
+    azurerm = {
+      source = "hashicorp/azurerm"
+      version = "3.68.0"
     }
     tanzu-mission-control = {
       source  = "vmware/tanzu-mission-control"
@@ -10,10 +10,9 @@ terraform {
     }
     }
   }
-provider "aws" {
-  region = "us-east-2"
-}  
-
+provider "azurerm" {
+  features {}
+}
 provider "tanzu-mission-control" {
   # Configuration options
   endpoint            = var.endpoint            # optionally use TMC_ENDPOINT env var
