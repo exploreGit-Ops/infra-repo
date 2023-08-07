@@ -5,6 +5,7 @@ This repo is a part of the [VMWare Explore talk]() on creating developer ready K
 ## Pre-reqs
 
 * install the [Terraform Task](https://marketplace.visualstudio.com/items?itemName=ms-devlabs.custom-terraform-tasks) in your ADO organization
+* [create a service connection](https://learn.microsoft.com/en-us/azure/devops/pipelines/library/service-endpoints?view=azure-devops&tabs=yaml#create-a-service-connection) for your azure subscription in ADO. This will be used in the azure pipelines yaml. 
 
 ## Create the Azure backend for Terraform
 
@@ -33,10 +34,4 @@ az storage account create --resource-group $RESOURCE_GROUP_NAME --name $STORAGE_
 # Create blob container
 az storage container create --name $CONTAINER_NAME --account-name $STORAGE_ACCOUNT_NAME
 
-```
-
-4. get the storage account key and store it for later use.
-
-```bash
-az storage account keys list --resource-group $RESOURCE_GROUP_NAME --account-name $STORAGE_ACCOUNT_NAME --query '[0].value' -o tsv
 ```
