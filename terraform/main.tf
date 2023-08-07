@@ -1,9 +1,9 @@
 module "cluster_group_gitops" {
-  source = "./clustergroups/cg_1/"
+  source = "./clustergroups/dev/"
   required_providers
 }
 
 module "cluster_create" {
-  source = "./clustergroups/cg_1/cluster_1/"
+  source = "./clustergroups/dev/iris-dev/"
   depends_on = [ module.cluster_group_gitops ]
 }
