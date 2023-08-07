@@ -10,7 +10,7 @@ data "azurerm_key_vault_secret" "tmc-endpoint" {
 
 data "azurerm_key_vault_secret" "tmc-api-key" {
   name         = "tmc-api-key"
-  key_vault_id = data.azurerm_key_vault.epxlore-gitops.id
+  key_vault_id = data.azurerm_key_vault.explore-gitops.id
 }
 
 module "cluster_group_gitops" {
