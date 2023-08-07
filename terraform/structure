@@ -1,19 +1,19 @@
 *terraform 
     - main.tf 
     *clustergroups
-    *cg_1
-        - main.tf (cg creation)
-        - enable_gitops_cg.tf
-        - kustomization.tf
-        *cluster_1
-            - cluster.tf
-        *cluster_2
-            - cluster.tf
-    *cg_2
-        - main.tf (cg creation)
-        - enable_gitops_cg.tf
-        - kustomization.tf
-        *cluster_a
-            - cluster.tf
-        *cluster_b
-            - cluster.tf 
+        *cg_1
+            - main.tf (cg creation)
+            - enable_gitops_cg.tf
+            - kustomization.tf
+            *cluster_1
+                - cluster.tf
+            *cluster_2
+                - cluster.tf
+        *cg_2
+            - main.tf (cg creation)
+            - enable_gitops_cg.tf
+            - kustomization.tf
+            *cluster_a
+                - cluster.tf
+            *cluster_b
+                - cluster.tf 
