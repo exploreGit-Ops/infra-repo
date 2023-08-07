@@ -1,6 +1,5 @@
 module "cluster_group_gitops" {
   source = "./clustergroups/dev/"
-  required_providers
 }
 
 module "cluster_create" {
