@@ -1,14 +1,12 @@
 # Create Tanzu Mission Control git repository with attached set as default value.
-resource "tanzu-mission-control_git_repository" "create_cluster_git_repository" {
+resource "tanzu-mission-control_git_repository" "create_cluster_group_git_repository" {
   name = "tmc-cd-new" # Required
 
   namespace_name = "tanzu-continuousdelivery-resources" #Required
 
   scope {
-    cluster {
-      name            = "eks.sp-eks-new.us-east-2.sp-eks-east-2-tf" # Required
-      provisioner_name        = "eks"    # Default: attached
-      management_cluster_name = "eks"    # Default: attached
+    cluster_group {
+      name = "tmc-multitenant-cluster-group" #Required
     }
   }
 
@@ -31,5 +29,4 @@ resource "tanzu-mission-control_git_repository" "create_cluster_git_repository" 
   }
 
   depends_on = [tanzu-mission-control_ekscluster.tf_eks_cluster]
-
 }
