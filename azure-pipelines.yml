@@ -59,7 +59,7 @@ stages:
                   provider: 'azurerm'
                   command: 'plan'
                   # commandOptions: '-input=false -var-file="../vars/$(Environment)/$(Environment).tfvars"'
-                  # environmentServiceNameAzureRM: 'tamopstf'
+                  environmentServiceNameAzureRM: 'warroyo-se'
                   workingDirectory: '$(System.DefaultWorkingDirectory)/terraform/'
 
   # - stage: apply
