@@ -15,8 +15,8 @@ provider "azurerm" {
 }
 provider "tanzu-mission-control" {
   # Configuration options
-  endpoint            = var.tmc-endpoint            # optionally use TMC_ENDPOINT env var
-  vmw_cloud_api_token = var.tmc-api-token # optionally use VMW_CLOUD_API_TOKEN env var
+  endpoint            = local.tmc-endpoint            # optionally use TMC_ENDPOINT env var
+  vmw_cloud_api_token = local.tmc-api-token # optionally use VMW_CLOUD_API_TOKEN env var
 
   # if you are using dev or different csp endpoint, change the default value below
   # for production environments the vmw_cloud_endpoint is console.cloud.vmware.com
