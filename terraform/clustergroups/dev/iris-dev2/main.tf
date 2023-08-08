@@ -95,7 +95,7 @@ resource "tanzu-mission-control_akscluster" "tf_aks_cluster" {
       spec  {
             mode              = "System" // Required
             type              = "VIRTUAL_MACHINE_SCALE_SETS"
-            availabilityZones = [
+            availability_zones = [
               "1",
               "2",
               "3"
@@ -121,13 +121,13 @@ resource "tanzu-mission-control_akscluster" "tf_aks_cluster" {
             # node_labels    = { "nplabelkey" : "nplabelvalue" }
             # tags           = { "nptagkey" : "nptagvalue3" }
 
-            auto_scaling_config = {
+            auto_scaling_config  {
               enable    = true // Force Recreate
               min_count = 1
               max_count = 5
             }
 
-            upgrade_config = {
+            upgrade_config  {
               max_surge = "30%"
             }
           }
