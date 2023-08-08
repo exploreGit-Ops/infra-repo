@@ -22,28 +22,7 @@ resource "tanzu-mission-control_akscluster" "tf_aks_cluster" {
         tier = "PAID" // Required
       }
 
-      # access_config {
-      #   enable_rbac            = true
-      #   disable_local_accounts = true
-      # }
-
-      # api_server_access_config {
-        # authorized_ip_ranges = [
-        #   "73.140.245.0/24",
-        #   "71.952.241.0/32",
-        # ]
-        # enable_private_cluster = false // Forces Recreate
-      # }
-
-      # linux_config {
-      #   // Force Recreate
-      #   admin_username = "test-admin-username"
-      #   ssh_keys       = [
-      #     "test-ssh-key-1",
-      #     "test-ssh-key-2",
-      #   ]
-      # }
-
+    
       network_config {
         // Required
         load_balancer_sku  = "standard"  // Forces Recreate
@@ -67,25 +46,6 @@ resource "tanzu-mission-control_akscluster" "tf_aks_cluster" {
         enable_snapshot_controller = true
       }
 
-      # addons_config {
-      #   azure_keyvault_secrets_provider_addon_config {
-      #     enable = true
-      #     keyvault_secrets_provider_config {
-      #       enable_secret_rotation = true
-      #       rotation_poll_interval = "5m"
-      #     }
-      #   }
-
-      #   monitor_addon_config {
-      #     enable                     = true
-      #     log_analytics_workspace_id = "test-log-analytics-workspace-id"
-      #   }
-
-      #   azure_policy_addon_config {
-      #     enable = true
-      #   }
-      # }
-
       auto_upgrade_config {
         upgrade_channel = "stable"
       }
@@ -93,7 +53,7 @@ resource "tanzu-mission-control_akscluster" "tf_aks_cluster" {
     nodepool {
       name = "systemnp"
       spec  {
-            mode              = "System" // Required
+            mode              = "SYSTEM" // Required
             type              = "VIRTUAL_MACHINE_SCALE_SETS"
             availability_zones = [
               "1",
@@ -102,24 +62,10 @@ resource "tanzu-mission-control_akscluster" "tf_aks_cluster" {
             ]
             count                     = 1 // Required
             vm_size                   = "Standard_DS2_v2" // Required // Force Recreate
-            # scale_set_priority        = "Regular"// Force Recreate
-            # scale_set_eviction_policy = "Delete" // Force Recreate
-            # spot_max_price            = 1.00
             os_type                   = "Linux"
             os_disk_type              = "Managed"        // Force Recreate
-            # os_disk_size_gb           =                       // Force Recreate
             max_pods                  = 110                      // Force Recreate
             enable_node_public_ip     = false
-            # node_taints               = [
-            #   {
-            #     effect = "NoSchedule"
-            #     key    = "randomkey"
-            #     value  = "randomvalue"
-            #   }
-            # ]
-            # vnet_subnet_id = "test-vnet-subnet-id" // Force Recreate
-            # node_labels    = { "nplabelkey" : "nplabelvalue" }
-            # tags           = { "nptagkey" : "nptagvalue3" }
 
             auto_scaling_config  {
               enable    = true // Force Recreate
