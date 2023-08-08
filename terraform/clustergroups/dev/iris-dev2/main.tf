@@ -1,7 +1,7 @@
 // Create Tanzu Mission Control AWS EKS cluster entry
 resource "tanzu-mission-control_akscluster" "tf_aks_cluster" {
   credential_name = "sp-aks-cred" // Required
-  subscription    = "d37d2a44-e6cc-434c-9e82-190ab5a1edf4"    // Required
+  subscription_id    = "d37d2a44-e6cc-434c-9e82-190ab5a1edf4"    // Required
   resource_group  = "my-resource-grp-sp"  // Required
   name            = "iris-dev2"    // Required
 
@@ -12,7 +12,7 @@ resource "tanzu-mission-control_akscluster" "tf_aks_cluster" {
 
   spec {
     cluster_group = "dev" // Default: default
-    azure_AKS {
+    config {
       location                 = "westus2" // Required     // Force Recreate
       version                  = "1.25.11"  // Required
       node_resource_group_name = "MC_my-resource-grp-sp_iris-dev-2_uswest2" // Force Recreate
@@ -90,14 +90,10 @@ resource "tanzu-mission-control_akscluster" "tf_aks_cluster" {
       auto_upgrade_config {
         upgrade_channel = "stable"
       }
-
-      nodepools = [
-        {
-          info = {
-            name = "third-np"
-          }
-
-          spec = {
+    }
+    nodepool {
+      name = "systemnp"
+      spec = {
             mode              = "System" // Required
             type              = "VIRTUAL_MACHINE_SCALE_SETS"
             availabilityZones = [
@@ -136,8 +132,7 @@ resource "tanzu-mission-control_akscluster" "tf_aks_cluster" {
               max_surge = "30%"
             }
           }
-        }
-      ]
+    }
+
     }
   }
-}
