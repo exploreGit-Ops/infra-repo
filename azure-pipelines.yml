@@ -81,7 +81,7 @@ stages:
                   echo "deb [signed-by=/etc/apt/keyrings/tanzu-archive-keyring.gpg] https://storage.googleapis.com/tanzu-cli-os-packages/apt tanzu-cli-jessie main" | sudo tee /etc/apt/sources.list.d/tanzu.list
                   sudo apt update
                   sudo apt install -y tanzu-cli
-                displayName: 'tanuz cli'
+                displayName: 'tanzu cli'
 
               - task: TerraformTaskV2@3
                 displayName: 'init'
