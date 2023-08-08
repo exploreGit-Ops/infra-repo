@@ -1,146 +1,143 @@
 // Create Tanzu Mission Control AWS EKS cluster entry
-resource "tanzu-mission-control_ekscluster" "tf_eks_cluster" {
-  credential_name = "sp-eks-new" // Required
-  region          = "us-east-2"          // Required
-  name            = "iris-dev2"        // Required
-
-  ready_wait_timeout = "30m" // Wait time for cluster operations to finish (default: 30m).
+resource "tanzu-mission-control_akscluster" "tf_aks_cluster" {
+  credential_name = "sp-aks-cred" // Required
+  subscription    = "d37d2a44-e6cc-434c-9e82-190ab5a1edf4"    // Required
+  resource_group  = "my-resource-grp-sp"  // Required
+  name            = "iris-dev2"    // Required
 
   meta {
-    description = "description of the cluster"
-    labels      = { "mode" : "automation", "username" : "sp" }
+    description = "aks iris dev cluster"
+    labels      = { "terraform" : "true" }
   }
 
   spec {
     cluster_group = "dev" // Default: default
-    #proxy         = "" //if used 
+    azure_AKS {
+      location                 = "westus2" // Required     // Force Recreate
+      version                  = "1.25.11"  // Required
+      node_resource_group_name = "MC_my-resource-grp-sp_iris-dev-2_uswest2" // Force Recreate
 
-    config {
-      role_arn           = "arn:aws:iam::687456942232:role/control-plane.17276895336783884699.eks.tmc.cloud.vmware.com" // Required, forces new
-      kubernetes_version = "1.25"                // Required
-      tags               = { "mode" : "terraform" }
-
-      kubernetes_network_config {
-        service_cidr = "10.100.0.0/16" // Forces new
+      sku {
+        name = "BASIC"
+        tier = "PAID" // Required
       }
 
-      logging {
-        api_server         = false
-        audit              = true
-        authenticator      = true
-        controller_manager = false
-        scheduler          = true
+      # access_config {
+      #   enable_rbac            = true
+      #   disable_local_accounts = true
+      # }
+
+      # api_server_access_config {
+        # authorized_ip_ranges = [
+        #   "73.140.245.0/24",
+        #   "71.952.241.0/32",
+        # ]
+        # enable_private_cluster = false // Forces Recreate
+      # }
+
+      # linux_config {
+      #   // Force Recreate
+      #   admin_username = "test-admin-username"
+      #   ssh_keys       = [
+      #     "test-ssh-key-1",
+      #     "test-ssh-key-2",
+      #   ]
+      # }
+
+      network_config {
+        // Required
+        load_balancer_sku  = "standard"  // Forces Recreate
+        network_plugin     = "kubenet"     // Forces Recreate
+        dns_service_ip     = "10.0.0.10"     // Forces Recreate
+        docker_bridge_cidr = "172.17.0.1/16" // Forces Recreate
+        pod_cidr           = [
+          // Forces Recreate
+          "10.244.0.0/16"
+        ]
+        service_cidr = [
+          // Forces Recreate
+          "10.0.0.0/26"
+        ]
+        dns_prefix                      = "iris-dev2-dns" // Required
+        enable_http_application_routing = true
       }
 
-      vpc { // Required
-        enable_private_access = true
-        enable_public_access  = true
-        public_access_cidrs = [
-          "0.0.0.0/0",
-        ]
-        security_groups = [ // Forces new
-          "sg-008e4bd0de09ebc90",
-        ]
-        subnet_ids = [ // Forces new
-           "subnet-0da4532cf7ceabcf2",
-          "subnet-017deb270cb808857",
-           "subnet-02c618d32cf78be79",
-          "subnet-0b2346462a0831132"
-        ]
+      storage_config {
+        enable_disk_csi_driver     = true
+        enable_file_csi_driver     = true
+        enable_snapshot_controller = true
       }
+
+      # addons_config {
+      #   azure_keyvault_secrets_provider_addon_config {
+      #     enable = true
+      #     keyvault_secrets_provider_config {
+      #       enable_secret_rotation = true
+      #       rotation_poll_interval = "5m"
+      #     }
+      #   }
+
+      #   monitor_addon_config {
+      #     enable                     = true
+      #     log_analytics_workspace_id = "test-log-analytics-workspace-id"
+      #   }
+
+      #   azure_policy_addon_config {
+      #     enable = true
+      #   }
+      # }
+
+      auto_upgrade_config {
+        upgrade_channel = "stable"
+      }
+
+      nodepools = [
+        {
+          info = {
+            name = "third-np"
+          }
+
+          spec = {
+            mode              = "System" // Required
+            type              = "VIRTUAL_MACHINE_SCALE_SETS"
+            availabilityZones = [
+              "1",
+              "2",
+              "3"
+            ]
+            count                     = 1 // Required
+            vm_size                   = "Standard_DS2_v2" // Required // Force Recreate
+            # scale_set_priority        = "Regular"// Force Recreate
+            # scale_set_eviction_policy = "Delete" // Force Recreate
+            # spot_max_price            = 1.00
+            os_type                   = "Linux"
+            os_disk_type              = "Managed"        // Force Recreate
+            # os_disk_size_gb           =                       // Force Recreate
+            max_pods                  = 110                      // Force Recreate
+            enable_node_public_ip     = false
+            # node_taints               = [
+            #   {
+            #     effect = "NoSchedule"
+            #     key    = "randomkey"
+            #     value  = "randomvalue"
+            #   }
+            # ]
+            # vnet_subnet_id = "test-vnet-subnet-id" // Force Recreate
+            # node_labels    = { "nplabelkey" : "nplabelvalue" }
+            # tags           = { "nptagkey" : "nptagvalue3" }
+
+            auto_scaling_config = {
+              enable    = true // Force Recreate
+              min_count = 1
+              max_count = 5
+            }
+
+            upgrade_config = {
+              max_surge = "30%"
+            }
+          }
+        }
+      ]
     }
-
-    nodepool {
-      info {
-        name        = "large-pool" // Required
-        description = "nodepool for eks cluster"
-      }
-
-      spec {
-        // Refer to nodepool's schema
-        role_arn       = "arn:aws:iam::687456942232:role/worker.17276895336783884699.eks.tmc.cloud.vmware.com" // Required
-        ami_type       = "CUSTOM"
-        capacity_type  = "ON_DEMAND"
-        root_disk_size = 40 // In GiB, default: 20GiB
-        tags           = { "mode" : "automation" }
-        node_labels    = { "tool" : "tf" }
-
-        subnet_ids = [ // Required
-          "subnet-0da4532cf7ceabcf2",
-          "subnet-017deb270cb808857"
-        ]
-
-      ami_info {
-        ami_id = "ami-09bc3e8855823484f"
-        override_bootstrap_cmd = "#!/bin/bash\n/etc/eks/bootstrap.sh iris-test"
-      }
-
-        remote_access {
-          ssh_key = "sp-eks-east-2-tf-key" // Required (if remote access is specified)
-
-          security_groups = [
-            "sg-008e4bd0de09ebc90",
-          ]
-        }
-
-        scaling_config {
-          desired_size = 3
-          max_size     = 5
-          min_size     = 1
-        }
-
-        update_config {
-          max_unavailable_nodes = "1"
-        }
-
-        instance_types = [
-          "t3.xlarge"
-        ]
-
-      }
-    }
-
-
-    # nodepool {
-    #   info {
-    #     name        = "second-np"
-    #     description = "second np for eks"
-    #   }
-
-    #   spec {
-    #     role_arn    = "arn:aws:iam::687456942232:role/worker.17276895336783884699.eks.tmc.cloud.vmware.com" // Required
-    #     tags        = { "nptag" : "nptagvalue7" }
-    #     ami_type       = "CUSTOM"
-    #     node_labels = { "nplabelkey" : "nplabelvalue" }
-
-    #     subnet_ids = [ // Required
-    #       "subnet-0d5629bf282e045e0",
-    #       "subnet-0c491fcf640355ffa",
-    #       "subnet-0a8fdf79f6efe263a",
-    #       "subnet-047d87edac86e8138"
-    #     ]
-
-    #     launch_template {
-    #       name    = "myLaunchTemplate"
-    #       version = "5"
-    #     }
-
-    #     scaling_config {
-    #       desired_size = 2
-    #       max_size     = 4
-    #       min_size     = 1
-    #     }
-
-    #     update_config {
-    #       max_unavailable_percentage = "12"
-    #     }
-
-    #     taints {
-    #       effect = "PREFER_NO_SCHEDULE"
-    #       key    = "randomkey"
-    #       value  = "randomvalue"
-    #     }
-    #   }
-    # }
   }
 }
