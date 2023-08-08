@@ -17,12 +17,12 @@ module "cluster_group_gitops" {
   source = "./clustergroups/dev/"
 }
 
-module "cluster_create" {
+module "iris_dev_cluster" {
   source = "./clustergroups/dev/iris-dev/"
   depends_on = [ module.cluster_group_gitops ]
 }
 
-module "cluster_create" {
+module "iris_dev2_cluster" {
   source = "./clustergroups/dev/iris-dev2/"
   depends_on = [ module.cluster_group_gitops ]
 }
