@@ -2,7 +2,7 @@
 resource "tanzu-mission-control_ekscluster" "tf_eks_cluster" {
   credential_name = "sp-eks-new" // Required
   region          = "us-east-2"          // Required
-  name            = "iris-dev"        // Required
+  name            = "iris-test"        // Required
 
   ready_wait_timeout = "30m" // Wait time for cluster operations to finish (default: 30m).
 
@@ -72,7 +72,7 @@ resource "tanzu-mission-control_ekscluster" "tf_eks_cluster" {
 
       ami_info {
         ami_id = "ami-09bc3e8855823484f"
-        override_bootstrap_cmd = "#!/bin/bash\n/etc/eks/bootstrap.sh sp-eks-east-2-tf"
+        override_bootstrap_cmd = "#!/bin/bash\n/etc/eks/bootstrap.sh iris-test"
       }
 
         remote_access {
