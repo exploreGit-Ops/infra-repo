@@ -47,7 +47,7 @@ resource "tanzu-mission-control_akscluster" "tf_aks_cluster" {
       }
 
       auto_upgrade_config {
-        upgrade_channel = "stable"
+        upgrade_channel = "STABLE"
       }
     }
     nodepool {
