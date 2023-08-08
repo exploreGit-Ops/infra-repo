@@ -96,6 +96,9 @@ stages:
                   backendAzureRmKey: 'terraform.tfstate'
                   workingDirectory: '$(System.DefaultWorkingDirectory)/terraform/'
               - task: TerraformTaskV2@3
+                env:
+                  TF_LOG_PROVIDER: TRACE
+                  TF_LOG: TRACE
                 displayName: 'apply'
                 inputs:
                   provider: 'azurerm'

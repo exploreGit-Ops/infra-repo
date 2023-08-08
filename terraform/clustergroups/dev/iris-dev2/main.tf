@@ -70,10 +70,10 @@ resource "tanzu-mission-control_ekscluster" "tf_eks_cluster" {
           "subnet-017deb270cb808857"
         ]
 
-      # ami_info {
-      #   ami_id = "ami-09bc3e8855823484f"
-      #   override_bootstrap_cmd = "#!/bin/bash\n/etc/eks/bootstrap.sh iris-test"
-      # }
+      ami_info {
+        ami_id = "ami-09bc3e8855823484f"
+        override_bootstrap_cmd = "#!/bin/bash\n/etc/eks/bootstrap.sh iris-test"
+      }
 
         remote_access {
           ssh_key = "sp-eks-east-2-tf-key" // Required (if remote access is specified)
