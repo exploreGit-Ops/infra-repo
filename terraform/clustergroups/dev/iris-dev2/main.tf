@@ -14,7 +14,7 @@ resource "tanzu-mission-control_akscluster" "tf_aks_cluster" {
     cluster_group = "dev" // Default: default
     config {
       location                 = "westus2" // Required     // Force Recreate
-      version                  = "1.25.11"  // Required
+      kubernetes_version                  = "1.25.11"  // Required
       node_resource_group_name = "MC_my-resource-grp-sp_iris-dev-2_uswest2" // Force Recreate
 
       sku {
@@ -59,7 +59,6 @@ resource "tanzu-mission-control_akscluster" "tf_aks_cluster" {
           "10.0.0.0/26"
         ]
         dns_prefix                      = "iris-dev2-dns" // Required
-        enable_http_application_routing = true
       }
 
       storage_config {
@@ -93,7 +92,7 @@ resource "tanzu-mission-control_akscluster" "tf_aks_cluster" {
     }
     nodepool {
       name = "systemnp"
-      spec = {
+      spec  {
             mode              = "System" // Required
             type              = "VIRTUAL_MACHINE_SCALE_SETS"
             availabilityZones = [
