@@ -1,6 +1,6 @@
 // Create Tanzu Mission Control AWS EKS cluster entry
 resource "tanzu-mission-control_akscluster" "tf_aks_cluster" {
-  credential_name = "sp-aks-cred" // Required
+  credential_name = "sp-aks-creds" // Required
   subscription_id    = "d37d2a44-e6cc-434c-9e82-190ab5a1edf4"    // Required
   resource_group  = "my-resource-grp-sp"  // Required
   name            = "iris-dev2"    // Required
