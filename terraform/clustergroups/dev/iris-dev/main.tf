@@ -12,7 +12,7 @@ resource "tanzu-mission-control_ekscluster" "tf_eks_cluster" {
   }
 
   spec {
-    cluster_group = "sp-cluster-grp" // Default: default
+    cluster_group = "dev" // Default: default
     #proxy         = "" //if used 
 
     config {
