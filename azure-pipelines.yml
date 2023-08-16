@@ -96,9 +96,11 @@ stages:
                   backendAzureRmKey: 'terraform.tfstate'
                   workingDirectory: '$(System.DefaultWorkingDirectory)/terraform/'
               - task: TerraformTaskV2@3
-                # env:
+                env:
                   # TF_LOG_PROVIDER: TRACE
                   # TF_LOG: TRACE
+                   TANZU_CLI_EULA_PROMPT_ANSWER: "yes"
+                   TANZU_CLI_CEIP_OPT_IN_PROMPT_ANSWER: "yes"
                 displayName: 'apply'
                 inputs:
                   provider: 'azurerm'
