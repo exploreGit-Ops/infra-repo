@@ -4,4 +4,5 @@ variable "template-file" {
 
 variable "data-inventory" {
   type = string
+  default = null
 }
