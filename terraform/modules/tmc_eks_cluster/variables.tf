@@ -22,11 +22,3 @@ variable "subnet_ids" {
 variable "np_subnet_ids" {
   type = list(string)
 }
-
-variable "tmc-endpoint" {
-  type = string
-}
-
-variable "tmc-api-key" {
-  type = string
-}

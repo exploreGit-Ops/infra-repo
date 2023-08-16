@@ -23,8 +23,32 @@ data "azurerm_key_vault_secret" "akv-client-secret" {
   key_vault_id = data.azurerm_key_vault.explore-gitops.id
 }
 
+## this sets up our TMC context becuase we can't assume it exists
+data "shell_script" "create-context" {
+    sensitive_environment = {
+    TANZU_API_TOKEN = data.azurerm_key_vault_secret.tmc-api-key.value
+   }
+    lifecycle_commands {
+        read = <<-EOF
+          set -e
+          tanzu context delete tmc  -y
+          tanzu context create tmc --endpoint ${data.azurerm_key_vault_secret.tmc-endpoint.value}
+          echo "{}"
+        EOF
+        
+    }
+}
+
+
+module "policy_templates" {
+
+source = "./policy_templates"
+
+}
+
 module "cluster_group_gitops" {
   source = "./clustergroups/dev/"
+  depends_on = [ module.policy_templates ]
 }
 
 module "iris_dev_cluster" {
@@ -32,8 +56,6 @@ module "iris_dev_cluster" {
   depends_on = [ module.cluster_group_gitops ]
   
   cluster_name = "iris-dev"
-  tmc-api-key = data.azurerm_key_vault_secret.tmc-api-key.value
-  tmc-endpoint = data.azurerm_key_vault_secret.tmc-endpoint.value
   azure-client-id = data.azurerm_key_vault_secret.akv-client-id.value
   azure-client-secret = data.azurerm_key_vault_secret.akv-client-secret.value
 }
@@ -45,8 +67,6 @@ module "iris_dev2_cluster" {
   depends_on = [ module.cluster_group_gitops ]
   
   cluster_name = "iris-dev2"
-  tmc-api-key = data.azurerm_key_vault_secret.tmc-api-key.value
-  tmc-endpoint = data.azurerm_key_vault_secret.tmc-endpoint.value
   azure-client-id = data.azurerm_key_vault_secret.akv-client-id.value
   azure-client-secret = data.azurerm_key_vault_secret.akv-client-secret.value
 }

@@ -14,8 +14,6 @@ module "tf_eks_cluster" {
   region = "us-east-2"
   eks_credential = "sp-eks-new"
   cluster_group = "dev"
-  tmc-api-key = var.tmc-api-key
-  tmc-endpoint = var.tmc-endpoint
 }
 
 module "iris_dev2_bootstrap" {

@@ -1,11 +1,3 @@
-variable "tmc-endpoint" {
-  type = string
-}
-
-variable "tmc-api-key" {
-  type = string
-}
-
 variable "azure-client-id" {
   type = string
 }

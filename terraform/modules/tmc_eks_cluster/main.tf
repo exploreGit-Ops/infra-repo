@@ -96,12 +96,8 @@ resource "tanzu-mission-control_ekscluster" "tf_eks_cluster" {
 
 
 data "shell_script" "tmc_kubeconfig" {
-    sensitive_environment = {
-    TANZU_API_TOKEN = var.tmc-api-key
-   }
     lifecycle_commands {
         read = <<-EOF
-          tanzu context create tmc --endpoint ${var.tmc-endpoint}
           echo "{\"kubeconfig\": \"$(tanzu tmc cluster kubeconfig get eks.${var.eks_credential}.${var.region}.${tanzu-mission-control_ekscluster.tf_eks_cluster.name} -m eks -p eks | base64)\"}" 
         EOF
     }
