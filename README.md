@@ -66,3 +66,26 @@ az ad sp list --display-name "service-connection-sp-name"
 az role assignment create --role "Key Vault Secrets User" --assignee {object id from output above} --scope /subscriptions/{subscriptionid}/resourcegroups/keyvaults/providers/Microsoft.KeyVault/vaults/explore-gitops
 
 ```
+
+## Create the initial secrets
+
+We need secrets some initial secrets for bootstrapping the cluster prior to flux taking over.
+
+### TMC credentials
+
+These will be used for pulling the cluster kubeconfig and also any cli commands we need to run with TF that the provider doesn't currently support.
+
+1. create the TMC secrets in the previously created vault
+
+```bash
+#the endpoint should just be the tmc hostname without the https://
+az keyvault secret set --vault-name "explore-gitops" --name "tmc-endpoint" --value "<tmc-endpoint>"
+az keyvault secret set --vault-name "explore-gitops" --name "tmc-api-key" --value "<tmc-api-key>"
+```
+
+2. create the azure client id and secret entries. these will be used to bootstrap the cluster so that external secrets can be used in the cluster. see [here](https://github.com/warroyo/flux-tmc-multitenant/blob/main/README.md#secret-tenancy) for more details about why we do this. This would be equivalent of the secret that is put into the `bootstrap/azure-secret.yaml`
+
+```bash
+az keyvault secret set --vault-name "explore-gitops" --name "akv-client-id" --value "<client-id>"
+az keyvault secret set --vault-name "explore-gitops" --name "tmc-client-secret" --value "<client-secret>"
+```

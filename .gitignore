@@ -25,6 +25,9 @@
 # Ignored vscode files
 .vscode/
 
+kubeconfig
+akv-secret.yml
+
 # Ignore Any Generated JSON Files
 operations/automation-script/apply.json
 operations/automation-script/configversion.json
