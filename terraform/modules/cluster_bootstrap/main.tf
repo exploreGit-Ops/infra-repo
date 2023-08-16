@@ -1,12 +1,12 @@
 
 
 resource "local_file" "kubeconfig" {
-    content     = base64decode(var.kubeconfig)
+    sensitive_content     = base64decode(var.kubeconfig)
     filename = "${path.module}/kubeconfig"
 }
 
 resource "local_file" "akv-secret" {
-    content     = templatefile("${path.module}/akv-secret.tftpl",{
+    sensitive_content     = templatefile("${path.module}/akv-secret.tftpl",{
         azure_client_id = base64encode(var.azure_client_id)
         azure_client_secret = base64encode(var.azure_client_secret)
     })
