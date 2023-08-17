@@ -9,7 +9,7 @@ data "local_file" "policy-file" {
 }
 
 
-resource "shell_script" "create_policy_template" {
+resource "shell_script" "create_policy" {
     lifecycle_commands {
         create = <<-EOF
           tanzu tmc policy create -f ${data.local_file.policy-file.filename} -s ${var.scope}

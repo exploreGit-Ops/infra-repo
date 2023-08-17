@@ -42,6 +42,11 @@ data "shell_script" "create-context" {
     }
 }
 
+module "iam_roles" {
+
+source = "./iam_roles"
+
+}
 
 module "policy_templates" {
 
