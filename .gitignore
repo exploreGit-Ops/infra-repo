@@ -45,4 +45,4 @@ operations/variable-scripts/variable.json
 # Sentinel runtime directory
 .sentinel
 
-./terraform/policy/policies/*.yaml
+terraform/policy/policies/*.yaml
