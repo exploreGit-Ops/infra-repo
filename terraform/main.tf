@@ -31,8 +31,11 @@ data "shell_script" "create-context" {
     lifecycle_commands {
         read = <<-EOF
           set -e
-          tanzu context delete tmc  -y
-          tanzu context create tmc --endpoint ${data.azurerm_key_vault_secret.tmc-endpoint.value}
+          context=$(tanzu context list -t tmc -o json | jq 'map(select(.name == "tmc-tf"))')
+          if [[ "$context" != "[]" ]]; then
+            tanzu context delete tmc-tf  -y
+          fi
+          tanzu context create tmc-tf --endpoint ${data.azurerm_key_vault_secret.tmc-endpoint.value}
           echo "{}"
         EOF
         
@@ -44,6 +47,12 @@ module "policy_templates" {
 
 source = "./policy_templates"
 
+}
+
+module "policy" {
+
+source = "./policy"
+depends_on = [ module.policy_templates ]
 }
 
 module "cluster_group_gitops" {
