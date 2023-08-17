@@ -1,6 +1,6 @@
-module "tf_eks_cluster" {
+module "iris-dev2-cluster" {
   source = "../../../modules/tmc_eks_cluster"
-  cluster_name = var.cluster_name
+  cluster_name = "iris-dev2"
   subnet_ids = [
     "subnet-0da4532cf7ceabcf2",
     "subnet-017deb270cb808857",
@@ -18,7 +18,7 @@ module "tf_eks_cluster" {
 
 module "iris_dev2_bootstrap" {
   source = "../../../modules/cluster_bootstrap/"
-  kubeconfig = module.tf_eks_cluster.kubeconfig
+  kubeconfig = module.iris-dev2-cluster.kubeconfig
   azure_client_id = var.azure-client-id
   azure_client_secret = var.azure-client-id
 }

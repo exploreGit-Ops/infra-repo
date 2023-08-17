@@ -60,32 +60,16 @@ source = "./policy"
 depends_on = [ module.policy_templates ]
 }
 
-module "cluster_group_gitops" {
+module "cluster_group_dev" {
   source = "./clustergroups/dev/"
   depends_on = [ module.policy_templates ]
 }
 
-module "iris_dev_cluster" {
-  source = "./clustergroups/dev/iris-dev/"
-  depends_on = [ module.cluster_group_gitops ]
+module "cluster_group_dev_clusters" {
+  source = "./clustergroups/dev/clusters/"
+  depends_on = [ module.cluster_group_dev ]
   
-  cluster_name = "iris-dev"
   azure-client-id = data.azurerm_key_vault_secret.akv-client-id.value
   azure-client-secret = data.azurerm_key_vault_secret.akv-client-secret.value
 }
-
-
-############ Dev2 cluster #################
-module "iris_dev2_cluster" {
-  source = "./clustergroups/dev/iris-dev2/"
-  depends_on = [ module.cluster_group_gitops ]
-  
-  cluster_name = "iris-dev2"
-  azure-client-id = data.azurerm_key_vault_secret.akv-client-id.value
-  azure-client-secret = data.azurerm_key_vault_secret.akv-client-secret.value
-}
-
-
-
-############ Dev2 cluster #################
 

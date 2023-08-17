@@ -1,5 +1,5 @@
 resource "tanzu-mission-control_workspace" "create_workspace" {
-  name = "iris-dev"
+  name = "iris-blue"
 
   meta {
     description = "Create workspace through terraform"
@@ -18,15 +18,15 @@ resource "tanzu-mission-control_workspace" "create_workspace" {
 resource "tanzu-mission-control_iam_policy" "workspace_scoped_iam_policy" {
   scope {
     workspace {
-      name = "iris-dev"
+      name = "iris-blue"
     }
   }
 
   role_bindings {
-    role = "workspace.edit"
+    role = "cluster-admin-equiv"
     subjects {
-      name = "developer"
-      kind = "USER"
+      name = "iris-blue:tenant-flux-reconciler"
+      kind = "SERVICEACCOUNT"
     }
   }
 }
