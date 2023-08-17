@@ -25,8 +25,8 @@
 # Ignored vscode files
 .vscode/
 
-kubeconfig
-akv-secret.yml
+kubeconfig-*
+akv-secret-*.yml
 
 # Ignore Any Generated JSON Files
 operations/automation-script/apply.json
@@ -44,3 +44,5 @@ operations/variable-scripts/variable.json
 
 # Sentinel runtime directory
 .sentinel
+
+./terraform/policy/policies/*.yaml

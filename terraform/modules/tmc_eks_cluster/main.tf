@@ -106,3 +106,7 @@ data "shell_script" "tmc_kubeconfig" {
 output "kubeconfig" {
     value = data.shell_script.tmc_kubeconfig.output.kubeconfig
 }
+
+output "cluster_name" {
+    value = tanzu-mission-control_ekscluster.tf_eks_cluster.name
+}

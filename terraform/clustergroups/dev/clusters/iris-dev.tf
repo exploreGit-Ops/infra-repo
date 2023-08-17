@@ -1,3 +1,4 @@
+
 module "iris-dev-cluster" {
   source = "../../../modules/tmc_eks_cluster"
   cluster_name = "iris-dev"
@@ -21,4 +22,5 @@ module "iris_dev_bootstrap" {
   kubeconfig = module.iris-dev-cluster.kubeconfig
   azure_client_id = var.azure-client-id
   azure_client_secret = var.azure-client-id
+  cluster_name = module.iris-dev-cluster.cluster_name
 }

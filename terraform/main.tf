@@ -54,15 +54,17 @@ source = "./policy_templates"
 
 }
 
-module "policy" {
 
-source = "./policy"
-depends_on = [ module.policy_templates ]
-}
 
 module "cluster_group_dev" {
   source = "./clustergroups/dev/"
   depends_on = [ module.policy_templates ]
+}
+
+module "policy" {
+
+source = "./policy"
+depends_on = [ module.policy_templates, module.cluster_group_dev ]
 }
 
 module "cluster_group_dev_clusters" {

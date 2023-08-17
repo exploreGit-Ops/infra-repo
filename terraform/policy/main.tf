@@ -2,7 +2,7 @@ resource "local_file" "enforce-es-naming-policy-dev" {
        content     = templatefile("${path.module}/policies/enforce-es-naming.tftpl",{
         cluster_group = "dev"
     })
-    filename = "${path.module}/policies/enforce-es-naming.yaml"
+    filename = "${path.module}/policies/enforce-es-naming-dev.yaml"
 }
 
 module "enforce-es-naming-policy-dev" {
@@ -17,7 +17,7 @@ resource "local_file" "enforce-sa-policy-dev" {
        content     = templatefile("${path.module}/policies/enforce-sa.tftpl",{
         cluster_group = "dev"
     })
-    filename = "${path.module}/policies/enforce-sa.yaml"
+    filename = "${path.module}/policies/enforce-sa-dev.yaml"
 }
 
 module "enforce-sa-policy-dev" {
