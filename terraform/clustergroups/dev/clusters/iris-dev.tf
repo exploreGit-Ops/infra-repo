@@ -21,6 +21,6 @@ module "iris_dev_bootstrap" {
   source = "../../../modules/cluster_bootstrap/"
   kubeconfig = module.iris-dev-cluster.kubeconfig
   azure_client_id = var.azure-client-id
-  azure_client_secret = var.azure-client-id
+  azure_client_secret = var.azure-client-secret
   cluster_name = module.iris-dev-cluster.cluster_name
 }

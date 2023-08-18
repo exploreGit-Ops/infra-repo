@@ -54,8 +54,6 @@ source = "./policy_templates"
 
 }
 
-
-
 module "cluster_group_dev" {
   source = "./clustergroups/dev/"
   depends_on = [ module.policy_templates ]
