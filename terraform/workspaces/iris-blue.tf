@@ -5,7 +5,7 @@ resource "tanzu-mission-control_workspace" "create_workspace" {
     description = "Create workspace through terraform"
     labels = {
       "mode" : "automation",
-      "platform" : "mutli_cloud"
+      "platform" : "terraform"
     }
   }
 }
