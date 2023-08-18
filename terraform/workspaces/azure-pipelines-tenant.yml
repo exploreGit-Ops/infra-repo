@@ -4,7 +4,7 @@ trigger:
       - main
   paths:
     include:
-      - 'terraform/workspaces'
+      - 'terraform/workspaces/*'
 
 stages:
   - stage: validate

@@ -4,9 +4,9 @@ trigger:
       - main
   paths:
     exclude:
-      - 'terraform/workspaces'
+      - 'terraform/workspaces/*'
     include:
-      - "terraform"
+      - "terraform/*"
 stages:
   - stage: validate
     jobs:
