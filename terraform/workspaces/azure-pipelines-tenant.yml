@@ -3,10 +3,9 @@ trigger:
     include:
       - main
   paths:
-    exclude:
-      - 'terraform/workspaces'
     include:
-      - "terrraform"
+      - 'terraform/workspaces'
+
 stages:
   - stage: validate
     jobs:
@@ -26,8 +25,8 @@ stages:
           backendAzureRmResourceGroupName: 'tfstate-explore'
           backendAzureRmStorageAccountName: 'tfstate01explore'
           backendAzureRmContainerName: 'tfstate'
-          backendAzureRmKey: 'terraform.tfstate'
-          workingDirectory: '$(System.DefaultWorkingDirectory)/terraform/'
+          backendAzureRmKey: 'terraform-workspaces.tfstate'
+          workingDirectory: '$(System.DefaultWorkingDirectory)/workspaces/'
       - task: TerraformTaskV2@3
         displayName: 'validate'
         inputs:
@@ -64,8 +63,8 @@ stages:
                   backendAzureRmResourceGroupName: 'tfstate-explore'
                   backendAzureRmStorageAccountName: 'tfstate01explore'
                   backendAzureRmContainerName: 'tfstate'
-                  backendAzureRmKey: 'terraform.tfstate'
-                  workingDirectory: '$(System.DefaultWorkingDirectory)/terraform/'
+                  backendAzureRmKey: 'terraform-workspaces.tfstate'
+                  workingDirectory: '$(System.DefaultWorkingDirectory)/workspaces/'
               - task: TerraformTaskV2@3
                 displayName: 'plan'
                 env:
@@ -76,7 +75,7 @@ stages:
                   command: 'plan'
                   # commandOptions: '-input=false -var-file="../vars/$(Environment)/$(Environment).tfvars"'
                   environmentServiceNameAzureRM: 'warroyo-se'
-                  workingDirectory: '$(System.DefaultWorkingDirectory)/terraform/'
+                  workingDirectory: '$(System.DefaultWorkingDirectory)/workspaces/'
 
   - stage: apply
     dependsOn: [plan]
@@ -109,8 +108,8 @@ stages:
                   backendAzureRmResourceGroupName: 'tfstate-explore'
                   backendAzureRmStorageAccountName: 'tfstate01explore'
                   backendAzureRmContainerName: 'tfstate'
-                  backendAzureRmKey: 'terraform.tfstate'
-                  workingDirectory: '$(System.DefaultWorkingDirectory)/terraform/'
+                  backendAzureRmKey: 'terraform-workspaces.tfstate'
+                  workingDirectory: '$(System.DefaultWorkingDirectory)/workspaces/'
               - task: TerraformTaskV2@3
                 env:
                    TANZU_CLI_EULA_PROMPT_ANSWER: "yes"
@@ -121,4 +120,4 @@ stages:
                   command: 'apply'
                   # commandOptions: '-input=false -var-file="../vars/$(Environment)/$(Environment).tfvars"'
                   environmentServiceNameAzureRM: 'warroyo-se'
-                  workingDirectory: '$(System.DefaultWorkingDirectory)/terraform/'
+                  workingDirectory: '$(System.DefaultWorkingDirectory)/workspaces/'
