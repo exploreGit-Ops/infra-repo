@@ -12,7 +12,7 @@ resource "tanzu-mission-control_git_repository" "create_cluster_group_git_reposi
 
   meta {
     description = "Create namespace through terraform"
-    labels      = { "key" : "value" }
+    labels      = { "key" : "test" }
   }
 
   spec {
