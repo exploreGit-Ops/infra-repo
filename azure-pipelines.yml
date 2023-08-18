@@ -6,7 +6,7 @@ trigger:
     exclude:
       - 'terraform/workspaces'
     include:
-      - "terrraform"
+      - "terraform"
 stages:
   - stage: validate
     jobs:
