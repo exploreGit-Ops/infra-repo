@@ -26,7 +26,7 @@ stages:
           backendAzureRmStorageAccountName: 'tfstate01explore'
           backendAzureRmContainerName: 'tfstate'
           backendAzureRmKey: 'terraform-workspaces.tfstate'
-          workingDirectory: '$(System.DefaultWorkingDirectory)/workspaces/'
+          workingDirectory: '$(System.DefaultWorkingDirectory)/terraform/workspaces/'
       - task: TerraformTaskV2@3
         displayName: 'validate'
         inputs:
@@ -44,15 +44,15 @@ stages:
                 displayName: 'install'
                 inputs:
                   terraformVersion: '1.5.4'
-              - script: |
-                  sudo apt update
-                  sudo apt install -y ca-certificates curl gpg
-                  sudo mkdir -p /etc/apt/keyrings
-                  curl -fsSL https://packages.vmware.com/tools/keys/VMWARE-PACKAGING-GPG-RSA-KEY.pub | sudo gpg --dearmor -o /etc/apt/keyrings/tanzu-archive-keyring.gpg
-                  echo "deb [signed-by=/etc/apt/keyrings/tanzu-archive-keyring.gpg] https://storage.googleapis.com/tanzu-cli-os-packages/apt tanzu-cli-jessie main" | sudo tee /etc/apt/sources.list.d/tanzu.list
-                  sudo apt update
-                  sudo apt install -y tanzu-cli
-                displayName: 'tanzu cli'
+              # - script: |
+              #     sudo apt update
+              #     sudo apt install -y ca-certificates curl gpg
+              #     sudo mkdir -p /etc/apt/keyrings
+              #     curl -fsSL https://packages.vmware.com/tools/keys/VMWARE-PACKAGING-GPG-RSA-KEY.pub | sudo gpg --dearmor -o /etc/apt/keyrings/tanzu-archive-keyring.gpg
+              #     echo "deb [signed-by=/etc/apt/keyrings/tanzu-archive-keyring.gpg] https://storage.googleapis.com/tanzu-cli-os-packages/apt tanzu-cli-jessie main" | sudo tee /etc/apt/sources.list.d/tanzu.list
+              #     sudo apt update
+              #     sudo apt install -y tanzu-cli
+              #   displayName: 'tanzu cli'
               - task: TerraformTaskV2@3
                 displayName: 'init'
                 inputs:
@@ -64,7 +64,7 @@ stages:
                   backendAzureRmStorageAccountName: 'tfstate01explore'
                   backendAzureRmContainerName: 'tfstate'
                   backendAzureRmKey: 'terraform-workspaces.tfstate'
-                  workingDirectory: '$(System.DefaultWorkingDirectory)/workspaces/'
+                  workingDirectory: '$(System.DefaultWorkingDirectory)/terraform/workspaces/'
               - task: TerraformTaskV2@3
                 displayName: 'plan'
                 env:
@@ -75,7 +75,7 @@ stages:
                   command: 'plan'
                   # commandOptions: '-input=false -var-file="../vars/$(Environment)/$(Environment).tfvars"'
                   environmentServiceNameAzureRM: 'warroyo-se'
-                  workingDirectory: '$(System.DefaultWorkingDirectory)/workspaces/'
+                  workingDirectory: '$(System.DefaultWorkingDirectory)/terraform/workspaces/'
 
   - stage: apply
     dependsOn: [plan]
@@ -88,15 +88,15 @@ stages:
                 displayName: 'install'
                 inputs:
                   terraformVersion: '1.5.4'
-              - script: |
-                  sudo apt update
-                  sudo apt install -y ca-certificates curl gpg
-                  sudo mkdir -p /etc/apt/keyrings
-                  curl -fsSL https://packages.vmware.com/tools/keys/VMWARE-PACKAGING-GPG-RSA-KEY.pub | sudo gpg --dearmor -o /etc/apt/keyrings/tanzu-archive-keyring.gpg
-                  echo "deb [signed-by=/etc/apt/keyrings/tanzu-archive-keyring.gpg] https://storage.googleapis.com/tanzu-cli-os-packages/apt tanzu-cli-jessie main" | sudo tee /etc/apt/sources.list.d/tanzu.list
-                  sudo apt update
-                  sudo apt install -y tanzu-cli
-                displayName: 'tanzu cli'
+              # - script: |
+              #     sudo apt update
+              #     sudo apt install -y ca-certificates curl gpg
+              #     sudo mkdir -p /etc/apt/keyrings
+              #     curl -fsSL https://packages.vmware.com/tools/keys/VMWARE-PACKAGING-GPG-RSA-KEY.pub | sudo gpg --dearmor -o /etc/apt/keyrings/tanzu-archive-keyring.gpg
+              #     echo "deb [signed-by=/etc/apt/keyrings/tanzu-archive-keyring.gpg] https://storage.googleapis.com/tanzu-cli-os-packages/apt tanzu-cli-jessie main" | sudo tee /etc/apt/sources.list.d/tanzu.list
+              #     sudo apt update
+              #     sudo apt install -y tanzu-cli
+              #   displayName: 'tanzu cli'
 
               - task: TerraformTaskV2@3
                 displayName: 'init'
@@ -109,7 +109,7 @@ stages:
                   backendAzureRmStorageAccountName: 'tfstate01explore'
                   backendAzureRmContainerName: 'tfstate'
                   backendAzureRmKey: 'terraform-workspaces.tfstate'
-                  workingDirectory: '$(System.DefaultWorkingDirectory)/workspaces/'
+                  workingDirectory: '$(System.DefaultWorkingDirectory)/terraform/workspaces/'
               - task: TerraformTaskV2@3
                 env:
                    TANZU_CLI_EULA_PROMPT_ANSWER: "yes"
@@ -120,4 +120,4 @@ stages:
                   command: 'apply'
                   # commandOptions: '-input=false -var-file="../vars/$(Environment)/$(Environment).tfvars"'
                   environmentServiceNameAzureRM: 'warroyo-se'
-                  workingDirectory: '$(System.DefaultWorkingDirectory)/workspaces/'
+                  workingDirectory: '$(System.DefaultWorkingDirectory)/terraform/workspaces/'
