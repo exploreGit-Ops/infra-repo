@@ -24,3 +24,17 @@ provider "tanzu-mission-control" {
   # for production environments the vmw_cloud_endpoint is console.cloud.vmware.com
   # vmw_cloud_endpoint = "console.cloud.vmware.com" or optionally use VMW_CLOUD_ENDPOINT env var
 }
+
+data "azurerm_key_vault" "explore-gitops" {
+  name                = "explore-gitops"
+  resource_group_name = "keyvaults"
+}
+data "azurerm_key_vault_secret" "tmc-endpoint" {
+  name         = "tmc-endpoint"
+  key_vault_id = data.azurerm_key_vault.explore-gitops.id
+}
+
+data "azurerm_key_vault_secret" "tmc-api-key" {
+  name         = "tmc-api-key"
+  key_vault_id = data.azurerm_key_vault.explore-gitops.id
+}
