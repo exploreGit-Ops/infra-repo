@@ -1,7 +1,7 @@
 
-module "iris-dev2-cluster" {
+module "infra-ops-cluster" {
   source = "../../../modules/tmc_eks_cluster"
-  cluster_name = "iris-dev2"
+  cluster_name = "infra-ops"
   subnet_ids = [
     "subnet-0da4532cf7ceabcf2",
     "subnet-017deb270cb808857",
@@ -14,13 +14,13 @@ module "iris-dev2-cluster" {
   ]
   region = "us-east-2"
   eks_credential = "sp-eks-new"
-  cluster_group = "dev"
+  cluster_group = "infra-ops"
 }
 
-module "iris_dev2_bootstrap" {
+module "infra-ops_bootstrap" {
   source = "../../../modules/cluster_bootstrap/"
-  kubeconfig = module.iris-dev2-cluster.kubeconfig
+  kubeconfig = module.infra-ops-cluster.kubeconfig
   azure_client_id = var.azure-client-id
   azure_client_secret = var.azure-client-secret
-  cluster_name = module.iris-dev2-cluster.cluster_name
+  cluster_name = module.infra-ops-cluster.cluster_name
 }
