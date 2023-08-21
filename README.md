@@ -1,6 +1,6 @@
 # Infra Repo
 
-This repo is a part of the [VMWare Explore talk]() on creating developer ready K8s clusters using TMC and GitOps. This repo holds all of the terraform, and infra level flux configurations.
+This repo is a part of the [VMWare Explore talk](https://event.vmware.com/flow/vmware/explore2023lv/content/page/catalog?tab.contentcatalogtabs=1627421929827001vRXW&search=code2900LV) on creating developer ready K8s clusters using TMC and GitOps. This repo holds all of the terraform, and infra level flux configurations.
 
 ## Pre-reqs
 
