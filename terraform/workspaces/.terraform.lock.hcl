@@ -25,6 +25,6 @@ provider "terraform.local/local/tmc" {
   version     = "1.0.0"
   constraints = "1.0.0"
   hashes = [
-    "h1:AVzf3NJz87a1b5WsS4sOZopVBzoShVW7udVDgUYS//s=",
+    "h1:gJ9qo2EBKkAkSn0aVMmwAtpKrVwNsOcK03kLm9GtEmg=",
   ]
 }

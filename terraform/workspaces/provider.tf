@@ -6,13 +6,9 @@ terraform {
       source = "hashicorp/azurerm"
       version = "3.68.0"
     }
-    # tanzu-mission-control = {
-    #   source  = "vmware/tanzu-mission-control"
-    #   version = "1.2.1"
-    # }
-     tanzu-mission-control = {
-      source  = "terraform.local/local/tmc"
-      version = "1.0.0"
+    tanzu-mission-control = {
+      source  = "vmware/tanzu-mission-control"
+      version = "1.2.2"
     }
     }
   }
