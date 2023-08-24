@@ -47,7 +47,7 @@ resource "tanzu-mission-control_ekscluster" "tf_eks_cluster" {
 
     nodepool {
       info {
-        name        = "default-pool" // Required
+        name        = "nodes-pool" // Required
         description = "initial pool for eks"
       }
 
@@ -86,7 +86,7 @@ resource "tanzu-mission-control_ekscluster" "tf_eks_cluster" {
         }
 
         instance_types = [
-          "t3.xlarge"
+          "m5.xlarge"
         ]
 
       }
