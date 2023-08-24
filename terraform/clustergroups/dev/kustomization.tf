@@ -29,3 +29,11 @@ resource "tanzu-mission-control_kustomization" "create_cluster_group_kustomizati
 
 
 }
+
+
+
+module "enable-helm" {
+  source = "../../modules/tmc-helm"
+  cluster_group = tanzu-mission-control_cluster_group.create_cluster_group.name
+  scope = "clustergroup"
+}
