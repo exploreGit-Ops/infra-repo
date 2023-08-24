@@ -6,7 +6,7 @@ resource "tanzu-mission-control_kustomization" "create_cluster_group_kustomizati
 
   scope {
     cluster_group {
-      name = "infra-ops" # Required
+      name = "test" # Required
     }
   }
 
@@ -16,7 +16,7 @@ resource "tanzu-mission-control_kustomization" "create_cluster_group_kustomizati
   }
 
     spec {
-    path = "clustergroups/infra-ops" # Required
+    path = "clustergroups/test" # Required
     prune = true
     interval = "5m" # Default: 5m
     source {
@@ -28,11 +28,4 @@ resource "tanzu-mission-control_kustomization" "create_cluster_group_kustomizati
   depends_on = [tanzu-mission-control_cluster_group.create_cluster_group,tanzu-mission-control_git_repository.create_cluster_group_git_repository]
 
 
-}
-
-
-module "enable-helm" {
-  source = "../../modules/tmc-helm"
-  cluster_group = tanzu-mission-control_cluster_group.create_cluster_group.name
-  scope = "clustergroup"
 }

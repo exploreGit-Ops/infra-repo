@@ -6,7 +6,7 @@ resource "tanzu-mission-control_git_repository" "create_cluster_group_git_reposi
 
   scope {
     cluster_group {
-      name = "dev" #Required
+      name = "test" #Required
     }
   }
 

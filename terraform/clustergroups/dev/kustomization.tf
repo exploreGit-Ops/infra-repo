@@ -16,7 +16,7 @@ resource "tanzu-mission-control_kustomization" "create_cluster_group_kustomizati
   }
 
     spec {
-    path = "/" # Required
+    path = "clustergroups/dev" # Required
     prune = true
     interval = "5m" # Default: 5m
     source {
