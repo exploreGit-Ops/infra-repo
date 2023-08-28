@@ -2,6 +2,8 @@
 
 This repo is a part of the [VMWare Explore talk](https://event.vmware.com/flow/vmware/explore2023lv/content/page/catalog?tab.contentcatalogtabs=1627421929827001vRXW&search=code2900LV) on creating developer ready K8s clusters using TMC and GitOps. This repo holds all of the terraform, and infra level flux configurations.
 
+
+This repo pairs with the flux multi-tenant repo [here]() it will provision all of the necessary TMC objects that are outlined the readme of that repo. Combining the two means that you can now run an ADO pipeline that will create setup all of the policy, IAM, flux, clusters, workspaces, clustergroups etc. and immediately be able to use the multitenant repo on those clusters.
 ## Pre-reqs
 
 * install the [Terraform Task](https://marketplace.visualstudio.com/items?itemName=ms-devlabs.custom-terraform-tasks) in your ADO organization
@@ -87,5 +89,120 @@ az keyvault secret set --vault-name "explore-gitops" --name "tmc-api-key" --valu
 
 ```bash
 az keyvault secret set --vault-name "explore-gitops" --name "akv-client-id" --value "<client-id>"
-az keyvault secret set --vault-name "explore-gitops" --name "tmc-client-secret" --value "<client-secret>"
+az keyvault secret set --vault-name "explore-gitops" --name "akv-client-secret" --value "<client-secret>"
+```
+
+
+## Execute the pipelines
+
+### Create the tenant workspaces pipeline
+
+Becuase ADO only picks up one pipeline automatically we need to add a second one manually. This only needs to happen once. The reason for this second pipeline is to keep seperate  terraform state for adding tenants.
+
+In the ADO UI, go to the pipelines section and choose new pipeline and github as the source. Then choose this repo and use an existing pipeline file. the file you want to use is `terraform/workspaces/azure-pipelines-tenant.yml` . After choosing this the pipeline will be created.
+
+
+The pipeline with do the following:
+
+1. terraform validate
+2. terraform plan
+3. terraform apply
+
+### Excecute the main infra pipeline
+
+With the above pieces done we can now commit the code and let the ADO pipeline run. This is the main pipeline so ADO picks it up automatically.
+
+The pipeline with do the following:
+
+1. terraform validate
+2. terraform plan
+3. terraform apply
+
+
+
+## Repo Structure
+
+This repo has two main folder structures. Here they are defined below
+
+### Infra Terraform
+
+This is in the main terraform folder. This handles creation of core TMC infra: cluster , policy, roles, cluster groups, CICD, etc. This folder has a bit in it so we will break it down by section.
+
+#### Cluster groups & clusters
+
+The cluster groups top level folder contains a folder for each cluster group. That folder hold any TF resources that apply to that group. It also contains a nested folder called `clusters` which has a file per cluster in that cluster group.
+
+```
+├── clustergroups
+│   ├── <group-name>
+│   │   ├── clusters
+│   │   │   ├── <cluster-x-name>.tf
+│   │   │   └── variables.tf
+│   │   ├── git-repo.tf
+│   │   ├── kustomization.tf
+│   │   ├── main.tf
+│   │   ├── policies.tf
+│   │   └── provider.tf
+```
+
+
+
+
+
+#### Modules
+
+All modules that are re-usuable go here. In the case of this repo, there are modules for cluster creation, policy creation, IAM policy and others. 
+
+```
+├── modules
+│   ├── <module-name>
+│   │   ├── main.tf
+│   │   ├── provider.tf
+│   │   └── variables.tf
+```
+#### Policies & IAM
+
+The `polcies` folder contains the policy bindings, they are terraform templates so they can be re-used per cluster group
+
+```
+├── policies
+│   ├── enforce-es-naming.tftpl
+│   └── enforce-sa.tftpl
+```
+
+
+The `policies_templates` folder holds a nested folder that contains the actual templates for custom policies as well as the TF that applies them.
+```
+├── policy_templates
+│   ├── main.tf
+│   ├── templates
+│   │   ├── enforce-es-naming-template.yaml
+│   │   └── enforce-sa-template.yaml
+│   └── variables.tf
+```
+
+
+The `iam_roles` folder contains the terraform to create new iam roles as well as the actual role yaml in the nested roles folder. 
+```
+├── iam_roles
+│   ├── main.tf
+│   ├── roles
+│   │   ├── cluster-admin-equiv-iam.yaml
+│   │   └── tmcnamespaces-iam.yaml
+│   └── variables.tf
+```
+
+### Tenant Terraform
+
+This is in the `terraform/workspaces` folder. This handles creating workspaces for tenants and the IAM permissions. In this directory there is a file per tenant.
+
+
+```
+└── workspaces
+    ├── azure-pipelines-tenant.yml
+    ├── iris-blue.tf
+    ├── iris-green.tf
+    ├── iris-red.tf
+    ├── provider.tf
+    └── variables.tf
 ```
