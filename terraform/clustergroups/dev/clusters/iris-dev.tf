@@ -15,6 +15,7 @@ module "iris-dev-cluster" {
   region = "us-east-2"
   eks_credential = "sp-eks-new"
   cluster_group = "dev"
+  k8s_version = "1.25"
 }
 
 module "iris_dev_bootstrap" {

@@ -14,6 +14,7 @@ module "infra-ops-cluster" {
   ]
   region = "us-east-2"
   eks_credential = "sp-eks-new"
+  k8s_version = "1.25"
   cluster_group = "infra-ops"
 }
 

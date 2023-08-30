@@ -120,6 +120,23 @@ The pipeline with do the following:
 
 
 
+# Usage with FLux repo
+
+This repo is intended to be paired with the [flux multi-tenant repo](https://github.com/warroyo/flux-tmc-multitenant/blob/main/README.md). it will set up the majority of the pre-reqs needed to use them together. When forking this repo and the flux repo for use in your own organization you will need to update the cluster names as needed.
+
+Here are the steps that need to be done from the flux repo that are not covered by the terraform here.
+
+1. create associated app repos - [docs](https://github.com/warroyo/flux-tmc-multitenant/blob/main/README.md#associated-repos)
+2. create the environment specific Azure keyvaults. The other steps like bootstrap and tmc policy are handled in this repo - [docs](https://github.com/warroyo/flux-tmc-multitenant/blob/main/README.md#secret-tenancy)
+3. create the hosted zone for DNS and IAM cred/policy - [docs](https://github.com/warroyo/flux-tmc-multitenant/blob/main/README.md#setup-automated-dns)
+4. add dns creds to AKV - [docs](https://github.com/warroyo/flux-tmc-multitenant/blob/main/README.md#add-the-aws-credentials-to-akv)
+5. Add TMC creds to the shared services AKV  - [docs](https://github.com/warroyo/flux-tmc-multitenant/blob/main/README.md#create-the-tmc-credential)
+
+Many of the above tasks could alos be done with Terraform, but this example does not cover that.
+
+Once those steps are completed running the terraform will provision everything needed and also setup the integration into the flux repo. as long as the cluster names match it should start syncing the clusters.
+
+
 ## Repo Structure
 
 This repo has two main folder structures. Here they are defined below

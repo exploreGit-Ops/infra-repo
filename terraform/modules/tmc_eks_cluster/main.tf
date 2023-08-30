@@ -4,7 +4,7 @@ resource "tanzu-mission-control_ekscluster" "tf_eks_cluster" {
   region          = var.region          // Required
   name            = var.cluster_name      // Required
 
-  ready_wait_timeout = "30m" // Wait time for cluster operations to finish (default: 30m).
+  # ready_wait_timeout = "30m" // Wait time for cluster operations to finish (default: 30m).
 
   meta {
     description = "created with TF"
@@ -16,8 +16,8 @@ resource "tanzu-mission-control_ekscluster" "tf_eks_cluster" {
     #proxy         = "" //if used 
 
     config {
-      role_arn           = "arn:aws:iam::687456942232:role/control-plane.17276895336783884699.eks.tmc.cloud.vmware.com" // Required, forces new
-      kubernetes_version = "1.25"                // Required
+      role_arn           = var.cp_role_arn // Required, forces new
+      kubernetes_version = var.k8s_version              // Required
       tags               = { "mode" : "terraform" }
 
       kubernetes_network_config {
@@ -38,9 +38,7 @@ resource "tanzu-mission-control_ekscluster" "tf_eks_cluster" {
         public_access_cidrs = [
           "0.0.0.0/0",
         ]
-        security_groups = [ // Forces new
-          "sg-008e4bd0de09ebc90",
-        ]
+        security_groups = var.security_groups
         subnet_ids = var.subnet_ids
       }
     }
@@ -53,8 +51,8 @@ resource "tanzu-mission-control_ekscluster" "tf_eks_cluster" {
 
       spec {
         // Refer to nodepool's schema
-        role_arn       = "arn:aws:iam::687456942232:role/worker.17276895336783884699.eks.tmc.cloud.vmware.com" // Required
-        ami_type       = "CUSTOM"
+        role_arn       = var.worker_role_arn // Required
+        ami_type       = "AL2_x86_64"
         capacity_type  = "ON_DEMAND"
         root_disk_size = 40 // In GiB, default: 20GiB
         tags           = { "mode" : "automation" }
@@ -62,18 +60,11 @@ resource "tanzu-mission-control_ekscluster" "tf_eks_cluster" {
 
         subnet_ids = var.np_subnet_ids
 
-      ami_info {
-        ami_id = "ami-09bc3e8855823484f"
-        override_bootstrap_cmd = "#!/bin/bash\n/etc/eks/bootstrap.sh ${var.cluster_name}"
-      }
+      # ami_info {
+      #   ami_id = "ami-09bc3e8855823484f"
+      #   override_bootstrap_cmd = "#!/bin/bash\n/etc/eks/bootstrap.sh ${var.cluster_name}"
+      # }
 
-        remote_access {
-          ssh_key = "sp-eks-east-2-tf-key" // Required (if remote access is specified)
-
-          security_groups = [
-            "sg-008e4bd0de09ebc90",
-          ]
-        }
 
         scaling_config {
           desired_size = 3

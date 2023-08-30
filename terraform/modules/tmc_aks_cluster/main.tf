@@ -1,7 +1,7 @@
 resource "tanzu-mission-control_akscluster" "tf_aks_cluster" {
-  credential_name = "sp-aks-creds" // Required
-  subscription_id    = "d37d2a44-e6cc-434c-9e82-190ab5a1edf4"    // Required
-  resource_group  = "my-resource-grp-sp"  // Required
+  credential_name = var.credential_name // Required
+  subscription_id    = var.subscription_id    // Required
+  resource_group  = var.resource_group  // Required
   name            = var.cluster_name    // Required
 
   meta {
@@ -12,9 +12,9 @@ resource "tanzu-mission-control_akscluster" "tf_aks_cluster" {
   spec {
     cluster_group = var.cluster_group // Default: default
     config {
-      location                 = "westus2" // Required     // Force Recreate
-      kubernetes_version                  = "1.25.11"  // Required
-      node_resource_group_name = "MC_my-resource-grp-sp_${var.cluster_name}_uswest2" // Force Recreate
+      location                 = var.region // Required     // Force Recreate
+      kubernetes_version                  = var.k8s_version  // Required
+      node_resource_group_name = "MC_${var.resource_group}_${var.cluster_name}_${var.region}" // Force Recreate
 
       sku {
         name = "BASIC"
