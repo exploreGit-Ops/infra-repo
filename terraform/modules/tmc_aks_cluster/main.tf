@@ -74,6 +74,15 @@ resource "tanzu-mission-control_akscluster" "tf_aks_cluster" {
 data "shell_script" "tmc_kubeconfig" {
     lifecycle_commands {
         read = <<-EOF
+          set -e
+          tanzu tmc cluster kubeconfig get ${tanzu-mission-control_akscluster.tf_aks_cluster.spec[0].agent_name} -m aks -p aks | while read line ; do 
+            if echo "$line" | grep "apiVersion: v1" 
+            then
+              break
+            else
+              echo "$line"
+            fi
+          done
           echo "{\"kubeconfig\": \"$(tanzu tmc cluster kubeconfig get ${tanzu-mission-control_akscluster.tf_aks_cluster.spec[0].agent_name} -m aks -p aks | base64)\"}" 
         EOF
     }
