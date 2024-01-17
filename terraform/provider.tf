@@ -12,7 +12,7 @@ terraform {
     }
     tanzu-mission-control = {
       source  = "vmware/tanzu-mission-control"
-      version = "1.2.2"
+      version = "1.4.1"
     }
     }
   }
