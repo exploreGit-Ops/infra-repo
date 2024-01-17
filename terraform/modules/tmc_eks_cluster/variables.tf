@@ -29,7 +29,7 @@ variable "k8s_version" {
 
 variable "cp_role_arn" {
   type = string
-  default = "arn:aws:iam::687456942232:role/control-plane.17276895336783884699.eks.tmc.cloud.vmware.com"
+  default = "arn:aws:iam::074754820263:role/control-plane.5733506324977179756.eks.tmc.cloud.vmware.com"
 }
 variable "security_groups" {
   type = list(string)
@@ -38,5 +38,5 @@ variable "security_groups" {
 
 variable "worker_role_arn" {
   type = string
-  default = "arn:aws:iam::687456942232:role/worker.17276895336783884699.eks.tmc.cloud.vmware.com"
+  default = "arn:aws:iam::074754820263:role/worker.5733506324977179756.eks.tmc.cloud.vmware.com"
 }
