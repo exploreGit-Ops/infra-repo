@@ -92,10 +92,10 @@ module "cluster_group_test" {
   depends_on = [ module.policy_templates ]
 }
 
-# module "cluster_group_test_clusters" {
-#   source = "./clustergroups/test/clusters/"
-#   depends_on = [ module.cluster_group_test ]
+module "cluster_group_test_clusters" {
+  source = "./clustergroups/test/clusters/"
+  depends_on = [ module.cluster_group_test ]
   
-#   azure-client-id = data.azurerm_key_vault_secret.akv-client-id.value
-#   azure-client-secret = data.azurerm_key_vault_secret.akv-client-secret.value
-# }
+  azure-client-id = data.azurerm_key_vault_secret.akv-client-id.value
+  azure-client-secret = data.azurerm_key_vault_secret.akv-client-secret.value
+}
