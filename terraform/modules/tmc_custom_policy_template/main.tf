@@ -1,20 +1,31 @@
 
 locals {
-  template-name = yamldecode(file(var.template-file)).metadata.name
+  template-contents = yamldecode(file(var.template-file))
+  template-name = local.template-contents.metadata.name
+
 }
 
 
 
-resource "shell_script" "create_policy_template" {
-    lifecycle_commands {
-        create = <<-EOF
-          tanzu tmc policy policy-template create --object-file ${var.template-file} ${var.data-inventory != null ? "--data-inventory ${var.data-inventory}" : ""}
-        EOF
-        update = <<-EOF
-          tanzu tmc policy policy-template update --object-file ${var.template-file} --force ${var.data-inventory != null ? "--data-inventory ${var.data-inventory}" : ""}
-        EOF
-        delete = <<-EOF
-          tanzu tmc policy policy-template delete ${local.template-name}
-        EOF
+resource "tanzu-mission-control_custom_policy_template" "create_policy_template" {
+  name = local.template-name
+
+  spec {
+    object_type   = "ConstraintTemplate"
+    template_type = "OPAGatekeeper"
+
+    dynamic "data_inventory" {
+      for_each = var.data-inventory
+      content {
+        # flipping the version and kind fields until bug here is fixed
+        # https://github.com/vmware/terraform-provider-tanzu-mission-control/issues/389
+        kind    =  data_inventory.value["version"]
+        group   =  data_inventory.value["group"]
+        version =  data_inventory.value["kind"]
+      }
     }
+
+
+    template_manifest = yamlencode(local.template-contents)
+  }
 }

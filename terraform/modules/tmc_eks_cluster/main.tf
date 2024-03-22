@@ -86,18 +86,6 @@ resource "tanzu-mission-control_ekscluster" "tf_eks_cluster" {
 }
 
 
-data "shell_script" "tmc_kubeconfig" {
-    lifecycle_commands {
-        read = <<-EOF
-          echo "{\"kubeconfig\": \"$(tanzu tmc cluster kubeconfig get eks.${var.eks_credential}.${var.region}.${tanzu-mission-control_ekscluster.tf_eks_cluster.name} -m eks -p eks | base64)\"}" 
-        EOF
-    }
-}
-
-output "kubeconfig" {
-    value = data.shell_script.tmc_kubeconfig.output.kubeconfig
-}
-
 output "cluster_name" {
     value = tanzu-mission-control_ekscluster.tf_eks_cluster.name
 }

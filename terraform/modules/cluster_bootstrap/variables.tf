@@ -1,6 +1,3 @@
-variable "kubeconfig" {
-  type = string
-}
 
 
 variable "azure_client_id" {
@@ -14,7 +11,7 @@ variable "azure_client_secret" {
 }
 
 
-variable "cluster_name" {
+variable "cluster_group" {
   type = string
 }
 

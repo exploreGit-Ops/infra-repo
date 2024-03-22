@@ -19,11 +19,3 @@ module "infra-ops-cluster" {
   k8s_version = "1.28"
   cluster_group = "infra-ops"
 }
-
-module "infra-ops_bootstrap" {
-  source = "../../../modules/cluster_bootstrap/"
-  kubeconfig = module.infra-ops-cluster.kubeconfig
-  azure_client_id = var.azure-client-id
-  azure_client_secret = var.azure-client-secret
-  cluster_name = module.infra-ops-cluster.cluster_name
-}

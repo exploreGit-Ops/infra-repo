@@ -1,13 +1,8 @@
-resource "shell_script" "helm-tmc" {
-    lifecycle_commands {
-        create = <<-EOF
-          tanzu tmc helm enable -g ${var.cluster_group} -s ${var.scope}
-        EOF
-        update = <<-EOF
-          tanzu tmc helm enable -g ${var.cluster_group} -s ${var.scope}
-        EOF
-        delete = <<-EOF
-          tanzu tmc helm disable -g ${var.cluster_group} -s ${var.scope}
-        EOF
+# Create Tanzu Mission Control cluster group scope helm feature with attached set as default value.
+resource "tanzu-mission-control_helm_feature" "create_cg_helm_feature" {
+  scope {
+    cluster_group {
+      name = var.cluster_group # Required
     }
+  }
 }

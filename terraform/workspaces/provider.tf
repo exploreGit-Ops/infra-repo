@@ -8,7 +8,7 @@ terraform {
     }
     tanzu-mission-control = {
       source  = "vmware/tanzu-mission-control"
-      version = "1.4.1"
+      version = "1.4.4"
     }
     }
   }

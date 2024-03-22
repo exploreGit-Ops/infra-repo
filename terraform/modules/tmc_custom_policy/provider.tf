@@ -1,8 +1,8 @@
 terraform {
   required_providers {
-    shell = {
-      source = "Ninlives/shell"
-      version = "1.7.12"
+    tanzu-mission-control = {
+      source  = "vmware/tanzu-mission-control"
+      version = "1.4.4"
     }
     }
   }

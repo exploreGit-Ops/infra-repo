@@ -19,11 +19,3 @@ module "iris-dev-cluster" {
   cluster_group = "dev"
   k8s_version = "1.28"
 }
-
-module "iris_dev_bootstrap" {
-  source = "../../../modules/cluster_bootstrap/"
-  kubeconfig = module.iris-dev-cluster.kubeconfig
-  azure_client_id = var.azure-client-id
-  azure_client_secret = var.azure-client-secret
-  cluster_name = module.iris-dev-cluster.cluster_name
-}

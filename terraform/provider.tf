@@ -2,17 +2,13 @@ terraform {
    backend "azurerm" {}
   required_providers {
 
-    shell = {
-      source = "Ninlives/shell"
-      version = "1.7.12"
-    }
     azurerm = {
       source = "hashicorp/azurerm"
       version = "3.68.0"
     }
     tanzu-mission-control = {
       source  = "vmware/tanzu-mission-control"
-      version = "1.4.1"
+      version = "1.4.4"
     }
     }
   }

@@ -3,6 +3,10 @@ variable "template-file" {
 }
 
 variable "data-inventory" {
-  type = string
-  default = null
+  type = list(object({
+    kind = string
+    version = string
+    group = string
+  }))
+  default = []
 }
