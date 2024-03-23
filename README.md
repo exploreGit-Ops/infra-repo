@@ -1,6 +1,6 @@
 # Infra Repo
 
-This repo is a part of the [VMware Explore talk](https://event.vmware.com/flow/vmware/explore2023lv/content/page/catalog?tab.contentcatalogtabs=1627421929827001vRXW&search=code2900LV) on creating developer ready K8s clusters using TMC and GitOps. This repo holds all of the terraform, and infra level flux configurations.
+This repo is a part of the [VMware Explore talk](https://event.vmware.com/flow/vmware/explore2023lv/content/page/catalog?tab.contentcatalogtabs=1627421929827001vRXW&search=code2900LV) on creating developer ready K8s clusters using Tanzu Mission Control (TMC) and GitOps. This repo holds all of the terraform, and infra level flux configurations.
 
 
 This repo pairs with the flux multi-tenant repo [here]() it will provision all of the necessary TMC objects that are outlined the readme of that repo. Combining the two means that you can now run an ADO pipeline that will create setup all of the policy, IAM, flux, clusters, workspaces, clustergroups etc. and immediately be able to use the multitenant repo on those clusters.
