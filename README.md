@@ -1,6 +1,6 @@
 # Infra Repo
 
-This repo is a part of the [VMWare Explore talk](https://event.vmware.com/flow/vmware/explore2023lv/content/page/catalog?tab.contentcatalogtabs=1627421929827001vRXW&search=code2900LV) on creating developer ready K8s clusters using TMC and GitOps. This repo holds all of the terraform, and infra level flux configurations.
+This repo is a part of the [VMware Explore talk](https://event.vmware.com/flow/vmware/explore2023lv/content/page/catalog?tab.contentcatalogtabs=1627421929827001vRXW&search=code2900LV) on creating developer ready K8s clusters using Tanzu Mission Control (TMC) and GitOps. This repo holds all of the Terraform, and infra level flux configurations.
 
 
 This repo pairs with the flux multi-tenant repo [here]() it will provision all of the necessary TMC objects that are outlined the readme of that repo. Combining the two means that you can now run an ADO pipeline that will create setup all of the policy, IAM, flux, clusters, workspaces, clustergroups etc. and immediately be able to use the multitenant repo on those clusters.
@@ -124,7 +124,7 @@ The pipeline with do the following:
 
 This repo is intended to be paired with the [flux multi-tenant repo](https://github.com/warroyo/flux-tmc-multitenant/blob/main/README.md). it will set up the majority of the pre-reqs needed to use them together. When forking this repo and the flux repo for use in your own organization you will need to update the cluster names as needed.
 
-Here are the steps that need to be done from the flux repo that are not covered by the terraform here.
+Here are the steps that need to be done from the flux repo that are not covered by the Terraform here.
 
 1. create associated app repos - [docs](https://github.com/warroyo/flux-tmc-multitenant/blob/main/README.md#associated-repos)
 2. create the environment specific Azure keyvaults. The other steps like bootstrap and tmc policy are handled in this repo - [docs](https://github.com/warroyo/flux-tmc-multitenant/blob/main/README.md#secret-tenancy)
@@ -134,7 +134,7 @@ Here are the steps that need to be done from the flux repo that are not covered 
 
 Many of the above tasks could alos be done with Terraform, but this example does not cover that.
 
-Once those steps are completed running the terraform will provision everything needed and also setup the integration into the flux repo. as long as the cluster names match it should start syncing the clusters.
+Once those steps are completed running the Terraform will provision everything needed and also setup the integration into the flux repo. as long as the cluster names match it should start syncing the clusters.
 
 
 ## Repo Structure
@@ -143,7 +143,7 @@ This repo has two main folder structures. Here they are defined below
 
 ### Infra Terraform
 
-This is in the main terraform folder. This handles creation of core TMC infra: cluster , policy, roles, cluster groups, CICD, etc. This folder has a bit in it so we will break it down by section.
+This is in the main Terraform folder. This handles creation of core TMC infra: cluster , policy, roles, cluster groups, CICD, etc. This folder has a bit in it so we will break it down by section.
 
 #### Cluster groups & clusters
 
@@ -179,7 +179,7 @@ All modules that are re-usuable go here. In the case of this repo, there are mod
 ```
 #### Policies & IAM
 
-The `polcies` folder contains the policy bindings, they are terraform templates so they can be re-used per cluster group
+The `polcies` folder contains the policy bindings, they are Terraform templates so they can be re-used per cluster group
 
 ```
 ├── policies
@@ -199,7 +199,7 @@ The `policies_templates` folder holds a nested folder that contains the actual t
 ```
 
 
-The `iam_roles` folder contains the terraform to create new iam roles as well as the actual role yaml in the nested roles folder. 
+The `iam_roles` folder contains the Terraform to create new iam roles as well as the actual role yaml in the nested roles folder. 
 ```
 ├── iam_roles
 │   ├── main.tf
